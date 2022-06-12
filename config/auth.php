@@ -42,7 +42,7 @@ return [
         ],
         'anggota' => [
             'driver' => 'session',
-            'provider' => 'admin',
+            'provider' => 'anggota',
         ],
     ],
 
