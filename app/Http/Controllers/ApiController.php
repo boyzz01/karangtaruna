@@ -22,7 +22,7 @@ class ApiController extends Controller
         DB::beginTransaction();
         try{
             $kecamatan = Kecamatan::where('nama',$request->kecamatan)->first();
-
+            $no = DB::table('counter')->where('id','=',1)->first();
     
             $user = new User();
             $user->email = $request->email;
@@ -31,8 +31,9 @@ class ApiController extends Controller
             $user->save(); 
 
 
+            $nomor = "1271".$kecamatan->kode.str_pad($no->counter, 6, '0', STR_PAD_LEFT);
             $temp = new Anggota();
-            $temp->kta="";
+            $temp->kta=$nomor;
             $temp->id_user =$user->id;
             $temp->email=$request->email; 
             $temp->nama=$request->nama;
@@ -78,6 +79,8 @@ class ApiController extends Controller
             }
 
             $saved = $temp->save();
+            $tes = $no->counter+1;
+            DB::update("update counter set counter = $tes where id = 1");
             DB::commit();
             if(!$saved){
                 return response()
