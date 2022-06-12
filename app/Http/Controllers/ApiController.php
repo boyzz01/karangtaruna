@@ -42,8 +42,15 @@ class ApiController extends Controller
         $temp->jabatan_kecamatan=$request->j_kecamatan;
         $temp->jabatan_kelurahan=$request->j_kelurahan;
         $temp->ktp="";
-        $temp->ttd="";
         $temp->foto="";
+
+        
+        if($request->file('ttd')!=null){
+            $ttd = $request->file('ttd')->store('ttd');
+            $url = config('app.url');
+            $image=$url."/storage/app/". $ttd;
+            $temp->ttd = $image;
+        }
 
         $saved = $temp->save();
 
