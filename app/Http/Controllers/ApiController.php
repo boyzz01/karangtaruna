@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerificationEmail;
 use App\Models\Anggota;
 use App\Models\Kecamatan;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ApiController extends Controller
@@ -47,7 +49,8 @@ class ApiController extends Controller
                     $user = new User();
                     $user->email = $request->email;
                     $user->password=$request->password;
-                    $user->email_token =Str::random(32);
+                    $user->name=$request->nama;
+                    $user->email_token =Str::random(6);
                     $user->save(); 
         
         
@@ -101,6 +104,9 @@ class ApiController extends Controller
                     $saved = $temp->save();
                     $tes = $no->value+1;
                     DB::update("update counter set value = $tes where id = 1");
+
+                    Mail::to($user->email)->send(new VerificationEmail($user));
+
                     DB::commit();
                     if(!$saved){
                         return response()
