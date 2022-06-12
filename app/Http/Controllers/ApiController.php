@@ -22,7 +22,7 @@ class ApiController extends Controller
 
         $temp = new Anggota();
         $temp->kta="";
-        $temp->id_user ="";
+        $temp->id_user =1;
         $temp->email=$request->email; 
         $temp->nama=$request->nama;
         $temp->nik=$request->nik;
