@@ -8,6 +8,7 @@ use App\Models\Kecamatan;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -19,8 +20,50 @@ class ApiController extends Controller
         return response()->json(Kecamatan::all());
     }
 
-    public function commit(Request $request){
-        
+  
+    public function check_user(Request $request)
+    {
+
+       
+        $credential = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email',$request->email)->first();
+
+        if($user==null){
+            return response()
+            ->json([
+                'success' => false,
+                'data' =>"Email Belum Terdaftar"
+            ]);
+        }
+
+    
+        if($user->email_verified == 1){
+            if (Auth::guard('anggota')->attempt($credential)){
+                return response()
+                ->json([
+                    'success' => true,
+                    'data' =>$user
+                ]);
+            }else{
+                return response()
+                ->json([
+                    'success' => false,
+                    'data' =>"Username Atau Password Salah"
+                ]);
+            }
+        }else{
+            return response()
+            ->json([
+                'success' => false,
+                'data' =>"0"
+            ]);
+        }
+      
+      
     }
     public function addAnggota(Request $request){
 
@@ -50,7 +93,7 @@ class ApiController extends Controller
                     $user->email = $request->email;
                     $user->password=$request->password;
                     $user->name=$request->nama;
-                    $user->email_token =Str::random(6);
+                    $user->email_token =sprintf("%06d", mt_rand(1, 999999));
                     $user->save(); 
         
         
