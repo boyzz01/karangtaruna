@@ -6,6 +6,7 @@ use App\Mail\VerificationEmail;
 use App\Models\Anggota;
 use App\Models\Kecamatan;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,38 @@ class ApiController extends Controller
         return response()->json(Kecamatan::all());
     }
 
+    public function check_verif(Request $request)
+    {
+        $user = User::where('email',$request->email)->first();
+        if($user==null){
+            return response()
+            ->json([
+                'success' => false,
+                'data' =>"Email Tidak ditemukan"
+            ]);
+        }else{
+            if($user->email_token==$request->token){
+                $user->update([
+        
+                    'email_verified' => 1,
+                    'email_verified_at' => Carbon::now(),
+                    'email_token' => ''
+            
+                   ]);
+                return response()
+                ->json([
+                    'success' => true,
+                    'data' =>""
+                ]);
+            }else{
+                return response()
+                ->json([
+                    'success' => false,
+                    'data' =>"Kode Verifikasi Salah"
+                ]);
+            }
+        }
+    }
   
     public function check_user(Request $request)
     {
@@ -38,30 +71,32 @@ class ApiController extends Controller
                 'success' => false,
                 'data' =>"Email Belum Terdaftar"
             ]);
-        }
+        }else{
 
-    
-        if($user->email_verified == 1){
-            if (Auth::guard('anggota')->attempt($credential)){
-                return response()
-                ->json([
-                    'success' => true,
-                    'data' =>$user
-                ]);
+            if($user->email_verified == 1){
+                if (Auth::guard('anggota')->attempt($credential)){
+                    return response()
+                    ->json([
+                        'success' => true,
+                        'data' =>$user
+                    ]);
+                }else{
+                    return response()
+                    ->json([
+                        'success' => false,
+                        'data' =>"Username Atau Password Salah"
+                    ]);
+                }
             }else{
                 return response()
                 ->json([
                     'success' => false,
-                    'data' =>"Username Atau Password Salah"
+                    'data' =>"0"
                 ]);
             }
-        }else{
-            return response()
-            ->json([
-                'success' => false,
-                'data' =>"0"
-            ]);
         }
+
+    
       
       
     }
