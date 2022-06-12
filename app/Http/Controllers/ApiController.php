@@ -19,7 +19,7 @@ class ApiController extends Controller
     //
 
     public function detail_anggota($id){
-        return response()->json(Anggota::where("id",$id)->first());
+        return response()->json(Anggota::where("id_users",$id)->first());
     }
     public function get_all_kecamatan(){
         return response()->json(Kecamatan::all());
