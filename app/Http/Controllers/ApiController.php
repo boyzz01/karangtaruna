@@ -79,7 +79,7 @@ class ApiController extends Controller
             }
 
             $saved = $temp->save();
-            $tes = $no->counter+1;
+            $tes = $no->value+1;
             DB::update("update counter set value = $tes where id = 1");
             DB::commit();
             if(!$saved){
