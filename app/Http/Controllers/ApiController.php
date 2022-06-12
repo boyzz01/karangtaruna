@@ -28,8 +28,6 @@ class ApiController extends Controller
             $user->email = $request->email;
             $user->password=$request->password;
             $user->email_token =Str::random(32);
-  
-
             $user->save(); 
 
 
@@ -80,6 +78,7 @@ class ApiController extends Controller
             }
 
             $saved = $temp->save();
+            DB::commit();
             if(!$saved){
                 return response()
                 ->json([
@@ -87,8 +86,6 @@ class ApiController extends Controller
                     'data' =>"Error"
                 ]);
             }else{
-
-            
                 return response()
                 ->json([
                     'success' => true,
