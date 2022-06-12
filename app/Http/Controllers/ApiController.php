@@ -26,7 +26,7 @@ class ApiController extends Controller
         $temp->email=$request->email; 
         $temp->nama=$request->nama;
         $temp->nik=$request->nik;
-        $temp->ttl=$request->ttl;
+        $temp->ttl=$request->tempatLahir.",".$request->tanggalLahir;
         $temp->agama=$request->agama;
         $temp->jenis_kelamin=$request->jk;
         $temp->pekerjaan=$request->pekerjaan;
