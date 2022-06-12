@@ -8,6 +8,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
@@ -26,6 +27,8 @@ class ApiController extends Controller
             $user = new User();
             $user->email = $request->email;
             $user->password=$request->password;
+            $user->email_token =Str::random(32);
+  
 
             $user->save(); 
 
