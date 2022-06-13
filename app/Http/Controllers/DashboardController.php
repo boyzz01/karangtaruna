@@ -10,7 +10,7 @@ class DashboardController extends Controller
     //
     public function index(){
 
-    
-        return view('dashboard');
+        $anggota =  DB::table('anggota')->get();
+        return view('dashboard',['data'=>$anggota]);
     }
 }

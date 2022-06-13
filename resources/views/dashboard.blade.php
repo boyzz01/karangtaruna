@@ -31,7 +31,7 @@
                                             <!--end::Svg Icon-->
                                         </span>
                                         <div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">
-                                            30</div>
+                                            {{ count($data) }}</div>
                                         <div class="font-weight-bold text-inverse-success font-size-sm">Total
                                             Anggota</div>
                                     </div>
@@ -98,17 +98,34 @@
                                     <tbody>
 
 
-                                        {{-- @php
+                                        @php
                                             $nomor = 1;
                                         @endphp
-                                        @foreach ($customer as $d)
+                                        @foreach ($data as $d)
                                             <tr id="tr{{ $d->id }}">
                                                 <td style=" width:5%">{{ $nomor }}</td>
-                                                <td>{{ $d->name }}</td>
-                                                <td>{{ $d->username }}</td>
-                                                <td>{{ $d->email }}</td>
-                                                <td>{{ $d->event_code }}</td>
+                                                <td>{{ $d->nama }}</td>
+                                                <td>{{ $d->kta }}</td>
+                                                <td>{{ $d->nik }}</td>
+                                                <td>{{ $d->no_hp }}</td>
+                                                <td nowrap="nowrap">
 
+
+                                                    <a href="javascript:;" class="btn btn-sm btn-info btn-icon edit_btn"
+                                                        id="{{ $d->id }}" title=" Edit Data Pasien">
+                                                        <i class="la la-edit"></i>
+                                                    </a>
+
+
+
+                                                    <button type="submit" class="btn btn-sm btn-danger btn-icon"
+                                                        title="Delete"
+                                                        onclick="return confirm('Are you sure want to delete this data?')"><i
+                                                            class="la la-trash">
+                                                        </i>
+                                                    </button>
+
+                                                </td>
 
 
 
@@ -117,7 +134,7 @@
                                             @php
                                                 $nomor++;
                                             @endphp
-                                        @endforeach --}}
+                                        @endforeach
 
 
 
