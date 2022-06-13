@@ -149,6 +149,7 @@ class ApiController extends Controller
                     $temp->pekerjaan=$request->pekerjaaan;
                     $temp->pendidikan=$request->pendidikan;
                     $temp->alamat=$request->alamat;
+                    $temp->kecamatan=$request->kecamatan;
                     $temp->kode_kecamatan=$kecamatan->kode;
                     $temp->kelurahan=$request->kelurahan;
                     $temp->lingkungan=$request->lingkungan;
