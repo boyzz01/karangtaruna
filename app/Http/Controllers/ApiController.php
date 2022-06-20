@@ -237,7 +237,6 @@ class ApiController extends Controller
             'pekerjaan'=>$request->pekerjaaan,
             'pendidikan'=>$request->pendidikan,
             'alamat'=>$request->alamat,
-            'kecamatan'=>$request->kecamatan,
             'kelurahan'=>$request->kelurahan,
             'lingkungan'=>$request->lingkungan,
             'no_hp'=>$request->no_hp,
