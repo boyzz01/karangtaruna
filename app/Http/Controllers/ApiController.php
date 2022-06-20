@@ -201,7 +201,7 @@ class ApiController extends Controller
                         return response()
                         ->json([
                             'success' => true,
-                            'data' =>"UMKM Berhasil ditambah"
+                            'data' =>"Sukses"
                         ]);
                     }
                 }
@@ -261,6 +261,47 @@ class ApiController extends Controller
                 ->json([
                     'success' => true,
                     'data' =>"UMKM Berhasil ditambah"
+                ]);
+            }
+        }
+        catch (Exception $e) {       // Rollback Transaction
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'data'=>$e
+            ]);
+            // ada yang error     
+        }
+    }
+
+    public function edit_foto(Request $request){
+        DB::beginTransaction();
+        try{
+         
+            if($request->file('foto')!=null){
+                $foto = $request->file('foto')->store('foto');
+                $url = config('app.url');
+                $image=$url."/storage/app/". $foto;
+                $temp = $image;
+            }
+        
+            $saved = Anggota::where('id_user',$request->id_user)
+            ->update(['foto'=>$temp]);
+
+      
+    
+            DB::commit();
+            if(!$saved){
+                return response()
+                ->json([
+                    'success' => false,
+                    'data' =>"Error"
+                ]);
+            }else{
+                return response()
+                ->json([
+                    'success' => true,
+                    'data' =>"Foto Berhasil diubah"
                 ]);
             }
         }
