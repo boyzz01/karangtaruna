@@ -225,7 +225,7 @@ class ApiController extends Controller
 
         DB::beginTransaction();
         try{
-            $kecamatan = Kecamatan::where('nama',$request->kecamatan)->first();
+         
          
     
  
@@ -238,7 +238,6 @@ class ApiController extends Controller
             'pendidikan'=>$request->pendidikan,
             'alamat'=>$request->alamat,
             'kecamatan'=>$request->kecamatan,
-            'kode_kecamatan'=>$kecamatan->kode,
             'kelurahan'=>$request->kelurahan,
             'lingkungan'=>$request->lingkungan,
             'no_hp'=>$request->no_hp,
