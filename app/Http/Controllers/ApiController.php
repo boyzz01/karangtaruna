@@ -219,4 +219,60 @@ class ApiController extends Controller
       
       
     }
+
+    public function edit_profil(Request $request){
+
+
+        DB::beginTransaction();
+        try{
+            $kecamatan = Kecamatan::where('nama',$request->kecamatan)->first();
+         
+    
+ 
+            $saved = Anggota::where('id_user',$request->id_user)
+            ->update(['nama'=>$request->nama,
+            'ttl'=>$request->tempatLahir.",".$request->tanggalLahir,
+            'agama'=>$request->agama,
+            'jenis_kelamin'=>$request->jk,
+            'pekerjaan'=>$request->pekerjaaan,
+            'pendidikan'=>$request->pendidikan,
+            'alamat'=>$request->alamat,
+            'kecamatan'=>$request->kecamatan,
+            'kode_kecamatan'=>$kecamatan->kode,
+            'kelurahan'=>$request->kelurahan,
+            'lingkungan'=>$request->lingkungan,
+            'no_hp'=>$request->no_hp,
+            'tingkat'=>"",
+            'jabatan_provinsi'=>$request->j_prov,
+            'jabatan_kota'=>$request->j_kota,
+            'jabatan_kecamatan'=>$request->j_kecamatan,
+            'jabatan_kelurahan'=>$request->j_kelurahan]);
+
+      
+        
+
+            DB::commit();
+            if(!$saved){
+                return response()
+                ->json([
+                    'success' => false,
+                    'data' =>"Error"
+                ]);
+            }else{
+                return response()
+                ->json([
+                    'success' => true,
+                    'data' =>"UMKM Berhasil ditambah"
+                ]);
+            }
+        }
+        catch (Exception $e) {       // Rollback Transaction
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'data'=>$e
+            ]);
+            // ada yang error     
+        }
+    }
 }
