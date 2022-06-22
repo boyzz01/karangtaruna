@@ -240,6 +240,12 @@ class ApiController extends Controller
         'jabatan_kecamatan'=>$request->j_kecamatan,
         'jabatan_kelurahan'=>$request->j_kelurahan]);
 
+        return response()
+        ->json([
+            'success' => false,
+            'data' =>"ok"
+        ]);
+
     } catch (QueryException $e) {
         //var_dump($e->getMessage())
         
