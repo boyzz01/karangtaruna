@@ -223,7 +223,7 @@ class ApiController extends Controller
 
     public function edit_profil(Request $request){
         try {
-        $saved = Anggota::where('id_user',$request->id_user)
+        Anggota::where('id_user',$request->id_user)
         ->update(['nama'=>$request->nama,
         'ttl'=>$request->tempatLahir.",".$request->tanggalLahir,
         'agama'=>$request->agama,
@@ -242,7 +242,7 @@ class ApiController extends Controller
 
         return response()
         ->json([
-            'success' => false,
+            'success' => true,
             'data' =>"ok"
         ]);
 
