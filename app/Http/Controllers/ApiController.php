@@ -8,6 +8,7 @@ use App\Models\Kecamatan;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -221,7 +222,7 @@ class ApiController extends Controller
     }
 
     public function edit_profil(Request $request){
-
+        try {
         $saved = Anggota::where('id_user',$request->id_user)
         ->update(['nama'=>$request->nama,
         'ttl'=>$request->tempatLahir.",".$request->tanggalLahir,
@@ -238,6 +239,29 @@ class ApiController extends Controller
         'jabatan_kota'=>$request->j_kota,
         'jabatan_kecamatan'=>$request->j_kecamatan,
         'jabatan_kelurahan'=>$request->j_kelurahan]);
+
+    } catch (QueryException $e) {
+        //var_dump($e->getMessage())
+        
+                        return response()
+                        ->json([
+                            'success' => false,
+                            'data' =>$e->getMessage()
+                        ]);
+     }
+        // if(!$saved){
+        //             return response()
+        //             ->json([
+        //                 'success' => false,
+        //                 'data' =>"Error"
+        //             ]);
+        //         }else{
+        //             return response()
+        //             ->json([
+        //                 'success' => true,
+        //                 'data' =>"UMKM Berhasil ditambah"
+        //             ]);
+        //         }
         // DB::beginTransaction();
         // try{
          
