@@ -20,6 +20,7 @@ Route::get('kategori',[ApiController::class, 'get_kategori']);
 Route::get('jenis',[ApiController::class, 'get_jenis']);
 
 Route::post('/add_anggota', [ApiController::class,'addAnggota'] );
+Route::post('/add_umkm', [ApiController::class,'addUmkm'] );
 
 Route::post('/login', [ApiController::class,'check_user'] );
 Route::post('/cek_verif', [ApiController::class,'check_verif'] );

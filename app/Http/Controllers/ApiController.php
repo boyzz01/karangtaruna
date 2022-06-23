@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerificationEmail;
 use App\Models\Anggota;
 use App\Models\Kecamatan;
+use App\Models\Umkm;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -368,5 +369,49 @@ class ApiController extends Controller
     public function get_jenis(){
         $data = DB::table("ms_jenis")->get();
         return response()->json($data);
+    }
+
+    public function addUmkm(Request $request){
+        DB::beginTransaction();
+        try{
+        
+            $umkm = new Umkm();
+            $umkm->nama = $request->nama;
+            $umkm->alamat = $request->alamat;
+            $umkm->bidang = $request->bidang;
+            $umkm->nib = $request->nib;
+            $umkm->modal = $request->modal;    
+            $umkm->id_user = $request->iduser;
+
+        
+            $saved = $umkm->save();
+        
+            DB::commit();
+            if(!$saved){
+                return response()
+                ->json([
+                    'success' => false,
+                    'data' =>"Error"
+                ]);
+            }else{
+                return response()
+                ->json([
+                    'success' => true,
+                    'data' =>"Sukses"
+                ]);
+            }
+        }
+        catch (Exception $e) {       // Rollback Transaction
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'data'=>$e
+            ]);
+            // ada yang error     
+        }
+         
+        
+      
+      
     }
 }
