@@ -372,29 +372,43 @@ class ApiController extends Controller
     }
 
     public function addUmkm(Request $request){
-       
-        $umkm = Array();
-        $umkm['nama'] = $request->nama;
-        $umkm['alamat'] = $request->alamat;
-        $umkm['bidang'] = $request->bidang;
-        $umkm['nib'] = $request->nib;
-        $umkm['modal'] = $request->modal;    
-        $umkm['id_user'] = $request->iduser;
-
-        if($request->file('foto')!=null){
-            $foto = $request->file('foto')->store('foto');
-            $url = config('app.url');
-            $image=$url."/storage/app/". $foto;
-            $umkm['foto'] = $image;
-        }
-
-        Umkm::UpdateOrCreate(['id_user' => $request->iduser],$umkm);
+        DB::beginTransaction();
+        try{
         
-        return response()
-        ->json([
-            'success' => true,
-            'data' =>"Sukses"
-        ]);
+            $umkm = Array();
+            $umkm['nama'] = $request->nama;
+            $umkm['alamat'] = $request->alamat;
+            $umkm['bidang'] = $request->bidang;
+            $umkm['nib'] = $request->nib;
+            $umkm['modal'] = $request->modal;    
+            $umkm['id_user'] = $request->iduser;
+
+            if($request->file('foto')!=null){
+                $foto = $request->file('foto')->store('foto');
+                $url = config('app.url');
+                $image=$url."/storage/app/". $foto;
+                $umkm['foto'] = $image;
+            }
+
+            Umkm::UpdateOrCreate(['id_user' => $request->iduser],$umkm);
+            
+        
+            DB::commit();
+            return response()
+            ->json([
+                'success' => true,
+                'data' =>"Sukses"
+            ]);
+        
+        }
+        catch (Exception $e) {       // Rollback Transaction
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'data'=>$e
+            ]);
+            // ada yang error     
+        }
          
         
       
