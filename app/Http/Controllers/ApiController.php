@@ -359,4 +359,9 @@ class ApiController extends Controller
             // ada yang error     
         }
     }
+
+    public function get_kategori(){
+        $data = DB::table("ms_kategori")->get();
+        return response()->json($data);
+    }
 }

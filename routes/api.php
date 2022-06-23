@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('kecamatan',[ApiController::class, 'get_all_kecamatan']);
+Route::get('kategori',[ApiController::class, 'get_kategori']);
 
 Route::post('/add_anggota', [ApiController::class,'addAnggota'] );
 
