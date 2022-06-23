@@ -390,8 +390,7 @@ class ApiController extends Controller
                 $umkm['foto'] = $image;
             }
 
-            $matchThese = ['id_user'=>$request->iduser];
-            Umkm::UpdateOrCreate(['user_id' => $request->iduser],$umkm);
+            Umkm::UpdateOrCreate(['id_user' => $request->iduser],$umkm);
             
         
             DB::commit();
