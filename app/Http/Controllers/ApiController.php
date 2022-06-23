@@ -384,23 +384,16 @@ class ApiController extends Controller
             $umkm->id_user = $request->iduser;
 
             $matchThese = ['id_user'=>$request->iduser];
-            $saved = Umkm::UpdateOrCreate($matchThese,$umkm);
+            Umkm::UpdateOrCreate(['user_id' => $request->iduser],$umkm);
             
         
             DB::commit();
-            if(!$saved){
-                return response()
-                ->json([
-                    'success' => false,
-                    'data' =>"Error"
-                ]);
-            }else{
-                return response()
-                ->json([
-                    'success' => true,
-                    'data' =>"Sukses"
-                ]);
-            }
+            return response()
+            ->json([
+                'success' => true,
+                'data' =>"Sukses"
+            ]);
+        
         }
         catch (Exception $e) {       // Rollback Transaction
             DB::rollback();
