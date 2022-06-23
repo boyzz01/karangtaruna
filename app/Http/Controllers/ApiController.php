@@ -383,8 +383,9 @@ class ApiController extends Controller
             $umkm->modal = $request->modal;    
             $umkm->id_user = $request->iduser;
 
-        
-            $saved = $umkm->save();
+            $matchThese = ['id_user'=>$request->iduser];
+            $saved = Umkm::UpdateOrCreate($matchThese,[$umkm]);
+            
         
             DB::commit();
             if(!$saved){
