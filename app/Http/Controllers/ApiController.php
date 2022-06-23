@@ -375,13 +375,20 @@ class ApiController extends Controller
         DB::beginTransaction();
         try{
         
-            $umkm = new Umkm();
-            $umkm->nama = $request->nama;
-            $umkm->alamat = $request->alamat;
-            $umkm->bidang = $request->bidang;
-            $umkm->nib = $request->nib;
-            $umkm->modal = $request->modal;    
-            $umkm->id_user = $request->iduser;
+            $umkm = Array();
+            $umkm['nama'] = $request->nama;
+            $umkm['alamat'] = $request->alamat;
+            $umkm['bidang'] = $request->bidang;
+            $umkm['nib'] = $request->nib;
+            $umkm['modal'] = $request->modal;    
+            $umkm['id_user'] = $request->iduser;
+
+            if($request->file('foto')!=null){
+                $foto = $request->file('foto')->store('foto');
+                $url = config('app.url');
+                $image=$url."/storage/app/". $foto;
+                $umkm['foto'] = $image;
+            }
 
             $matchThese = ['id_user'=>$request->iduser];
             Umkm::UpdateOrCreate(['user_id' => $request->iduser],$umkm);
