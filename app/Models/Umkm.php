@@ -16,7 +16,8 @@ class Umkm extends Model
         'bidang',
         'nib',
         'modal',
-        'id_user'
+        'id_user',
+        'foto'
     
     ];
 
