@@ -364,4 +364,9 @@ class ApiController extends Controller
         $data = DB::table("ms_kategori")->get();
         return response()->json($data);
     }
+
+    public function get_jenis(){
+        $data = DB::table("ms_jenis")->get();
+        return response()->json($data);
+    }
 }
