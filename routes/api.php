@@ -26,7 +26,7 @@ Route::post('/login', [ApiController::class,'check_user'] );
 Route::post('/cek_verif', [ApiController::class,'check_verif'] );
 
 Route::get('detail_anggota/{id}',[ApiController::class, 'detail_anggota']);
-
+Route::get('detail_umkm/{id}',[ApiController::class, 'detail_umkm']);
 Route::post('edit_profil',[ApiController::class, 'edit_profil']);
 
 Route::post('edit_foto',[ApiController::class, 'edit_foto']);

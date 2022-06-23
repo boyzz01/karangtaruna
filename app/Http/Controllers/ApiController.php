@@ -414,4 +414,8 @@ class ApiController extends Controller
       
       
     }
+
+    public function detail_umkm($id){
+        return response()->json(Umkm::where("id_user",$id)->first());
+    }
 }
