@@ -432,7 +432,7 @@ class ApiController extends Controller
         $temp =new Produk();
         $temp->nama =$request->nama; 
         $temp->harga =$request->harga;
-        $temp->id_umkm =$request->umkm;
+        $temp->id_umkm =$request->id_umkm;
         $temp->kategori = $request->kategori;
         $temp->deskripsi= $request->deskripsi;
 
