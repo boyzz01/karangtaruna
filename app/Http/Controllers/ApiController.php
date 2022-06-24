@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerificationEmail;
 use App\Models\Anggota;
 use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\Produk;
 use App\Models\Umkm;
 use App\Models\User;
@@ -26,6 +27,10 @@ class ApiController extends Controller
     }
     public function get_all_kecamatan(){
         return response()->json(Kecamatan::all());
+    }
+
+    public function get_all_kelurahan(){
+        return response()->json(Kelurahan::all());
     }
 
     public function check_verif(Request $request)
@@ -129,6 +134,7 @@ class ApiController extends Controller
                 DB::beginTransaction();
                 try{
                     $kecamatan = Kecamatan::where('nama',$request->kecamatan)->first();
+                    $kelurahan = Kelurahan::where('nama',$request->kelurahan)->first();
                     $no = DB::table('counter')->where('id','=',1)->first();
             
                     $user = new User();
@@ -139,7 +145,7 @@ class ApiController extends Controller
                     $user->save(); 
         
         
-                    $nomor = "1271.".$kecamatan->kode.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
+                    $nomor = "1271.".$kecamatan->kode.".".$kelurahan->kode_kelurahan.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
                     $temp = new Anggota();
                     $temp->kta=$nomor;
                     $temp->id_user =$user->id;
