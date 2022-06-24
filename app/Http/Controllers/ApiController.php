@@ -472,7 +472,7 @@ class ApiController extends Controller
     }
 
     public function get_kelurahan($id){
-        $data = DB::table("kelurahan")->where('id_kecamatan',$id)->get();
+        $data = DB::table("ms_kelurahan")->where('id_kecamatan',$id)->get();
         return response()->json($data);
     }
 }
