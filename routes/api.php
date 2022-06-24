@@ -35,3 +35,5 @@ Route::post('edit_foto',[ApiController::class, 'edit_foto']);
 Route::post('/add_produk', [ApiController::class,'add_produk'] );
 Route::get('produk_umkm/{id}',[ApiController::class, 'get_produk_umkm']);
 Route::get('detail_produk/{id}',[ApiController::class, 'detail_produk']);
+
+Route::get('kelurahan/{id}',[ApiController::class, 'get_kelurahan']);

@@ -470,4 +470,9 @@ class ApiController extends Controller
     public function detail_produk($id){
         return response()->json(Produk::where("id",$id)->first());
     }
+
+    public function get_kelurahan($id){
+        $data = DB::table("kelurahan")->where('id_kecamatan',$id)->get();
+        return response()->json($data);
+    }
 }
