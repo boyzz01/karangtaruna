@@ -418,4 +418,10 @@ class ApiController extends Controller
     public function detail_umkm($id){
         return response()->json(Umkm::where("id_user",$id)->first());
     }
+
+    
+    public function get_umkm(){
+        $data = DB::table("umkm")->get();
+        return response()->json($data);
+    }
 }
