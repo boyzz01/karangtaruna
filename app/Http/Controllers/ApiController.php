@@ -163,11 +163,8 @@ class ApiController extends Controller
                     $temp->kelurahan=$request->kelurahan;
                     $temp->lingkungan=$request->lingkungan;
                     $temp->no_hp=$request->no_hp;
-                    $temp->tingkat="";
-                    $temp->jabatan_provinsi=$request->j_prov;
-                    $temp->jabatan_kota=$request->j_kota;
-                    $temp->jabatan_kecamatan=$request->j_kecamatan;
-                    $temp->jabatan_kelurahan=$request->j_kelurahan;
+                    $temp->tingkat=$request->pj;
+                    $temp->jabatan=$request->posisi;
                     $temp->ktp="";
                     $temp->foto="";
         
