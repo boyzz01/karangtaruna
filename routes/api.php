@@ -31,3 +31,7 @@ Route::get('detail_umkm/{id}',[ApiController::class, 'detail_umkm']);
 Route::post('edit_profil',[ApiController::class, 'edit_profil']);
 
 Route::post('edit_foto',[ApiController::class, 'edit_foto']);
+
+Route::post('/add_produk', [ApiController::class,'add_produk'] );
+Route::get('produk_umkm/{id}',[ApiController::class, 'get_produk_umkm']);
+Route::get('detail_produk/{id}',[ApiController::class, 'detail_produk']);

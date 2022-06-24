@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerificationEmail;
 use App\Models\Anggota;
 use App\Models\Kecamatan;
+use App\Models\Produk;
 use App\Models\Umkm;
 use App\Models\User;
 use Carbon\Carbon;
@@ -423,5 +424,50 @@ class ApiController extends Controller
     public function get_umkm(){
         $data = DB::table("umkm")->get();
         return response()->json($data);
+    }
+
+    public function add_produk(Request $request){
+
+        $foto = $request->file('foto')->store('foto');
+        $temp =new Produk();
+        $temp->nama =$request->nama; 
+        $temp->harga =$request->harga;
+        $temp->id_umkm =$request->umkm;
+        $temp->kategori = $request->kategori;
+        $temp->deskripsi= $request->deskripsi;
+
+        $url = config('app.url');
+        $temp->foto =$url."/storage/app/". $foto;
+
+       
+        $saved = $temp->save();
+    
+
+          if(!$saved){
+            return response()
+            ->json([
+                'success' => false,
+                'data' =>"Error"
+            ]);
+          }else{
+             
+            return response()
+            ->json([
+                'success' => true,
+                'data' =>"sukses"
+            ]);
+          }
+
+         
+      
+    }
+
+    public function get_produk_umkm($id){
+        $produk = DB::select("SELECT * FROM produk WHERE id_umkm =  '$id'");
+        return response()->json($produk);
+    }
+
+    public function detail_produk($id){
+        return response()->json(Produk::where("id",$id)->first());
     }
 }
