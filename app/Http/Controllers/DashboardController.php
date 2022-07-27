@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
 
         $anggota =  DB::table('anggota')->get();
-        return view('dashboard',['data'=>$anggota]);
+        $umkm = DB::table('umkm')->get();
+        return view('dashboard', ['data' => $anggota, 'umkm' => $umkm]);
     }
 }

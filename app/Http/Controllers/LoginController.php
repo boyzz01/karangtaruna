@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 class LoginController extends Controller
 {
     //
-     
+
     public function index()
     {
         return view('login');
@@ -25,21 +25,30 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $user = Admin::where('username',$request->username)->first();
+        $user = Admin::where('username', $request->username)->first();
         // Attempt to log the user in
-        if($user==null){
-            return redirect()->back()->withInput($request->only('email', 'remember'))->with('error','Wrong Username or Password.');
+        if ($user == null) {
+            return redirect()->back()->withInput($request->only('email', 'remember'))->with('error', 'Wrong Username or Password.');
         }
 
-        if(Auth::attempt($credential))
-        {
-            
+        if (Auth::attempt($credential)) {
+
             $request->session()->regenerate(); //me-generate ulang session untuk menghindari hacking
-            
+
             return redirect()->intended('/');
         }
 
-        return redirect()->back()->withInput($request->only('email', 'remember'))->with('error','Wrong Username or Password.');
+        return redirect()->back()->withInput($request->only('email', 'remember'))->with('error', 'Wrong Username or Password.');
     }
 
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
 }

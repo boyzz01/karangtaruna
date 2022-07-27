@@ -31,8 +31,8 @@
 <script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('assets/js/pages/crud/datatables/extensions/buttons.js') }}"></script>
 <script>
-    $(function() {
-        $('.dtView').DataTable({
+    $(function () {
+        $('.kt_datatable2').DataTable({
             responsive: true,
             // Pagination settings
             dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
