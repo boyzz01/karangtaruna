@@ -144,7 +144,7 @@ class ApiController extends Controller
                     $user->email_token = sprintf("%06d", mt_rand(1, 999999));
                     $user->save();
 
-                    $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "1271" . $kecamatan->kode . $kelurahan->kode_kelurahan;
+                    $nomor = str_pad($no->value, 6, '0', STR_PAD_LEFT) . "1271" . $kecamatan->kode . $kelurahan->kode_kelurahan;
                     //  $nomor = "1271.".$kecamatan->kode.".".$kelurahan->kode_kelurahan.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
                     $temp = new Anggota();
                     $temp->kta = $nomor;
