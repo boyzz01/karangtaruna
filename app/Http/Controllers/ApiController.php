@@ -131,93 +131,170 @@ class ApiController extends Controller
                         'data' => "NIK Sudah Terdaftar"
                     ]);
             } else {
-                DB::beginTransaction();
-                try {
-                    $kecamatan = Kecamatan::where('nama', $request->kecamatan)->first();
-                    $kelurahan = Kelurahan::where('nama', $request->kelurahan)->first();
-                    $no = DB::table('counter')->where('id', '=', 1)->first();
+                $kecamatan = Kecamatan::where('nama', $request->kecamatan)->first();
+                $kelurahan = Kelurahan::where('nama', $request->kelurahan)->first();
+                $no = DB::table('counter')->where('id', '=', 1)->first();
 
-                    $user = new User();
-                    $user->email = $request->email;
-                    $user->password = $request->password;
-                    $user->name = $request->nama;
-                    $user->email_token = sprintf("%06d", mt_rand(1, 999999));
-                    $user->save();
+                $user = new User();
+                $user->email = $request->email;
+                $user->password = $request->password;
+                $user->name = $request->nama;
+                $user->email_token = sprintf("%06d", mt_rand(1, 999999));
+                $user->save();
 
-                    $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "1271" . $kecamatan->kode . $kelurahan->kode_kelurahan;
-                    //  $nomor = "1271.".$kecamatan->kode.".".$kelurahan->kode_kelurahan.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
-                    $temp = new Anggota();
-                    $temp->kta = $nomor;
-                    $temp->id_user = $user->id;
-                    $temp->email = $request->email;
-                    $temp->nama = $request->nama;
-                    $temp->nik = $request->nik;
-                    $temp->ttl = $request->tempatLahir . "," . $request->tanggalLahir;
-                    $temp->agama = $request->agama;
-                    $temp->jenis_kelamin = $request->jk;
-                    $temp->pekerjaan = $request->pekerjaaan;
-                    $temp->pendidikan = $request->pendidikan;
-                    $temp->alamat = $request->alamat;
-                    $temp->kecamatan = $request->kecamatan;
-                    $temp->kode_kecamatan = $kecamatan->kode;
-                    $temp->kelurahan = $request->kelurahan;
-                    $temp->lingkungan = $request->lingkungan;
-                    $temp->no_hp = $request->no_hp;
-                    $temp->tingkat = $request->pj;
-                    $temp->jabatan = $request->posisi;
-                    $temp->ktp = "";
-                    $temp->foto = "";
+                $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "1271" . $kecamatan->kode . $kelurahan->kode_kelurahan;
+                //  $nomor = "1271.".$kecamatan->kode.".".$kelurahan->kode_kelurahan.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
+                $temp = new Anggota();
+                $temp->kta = $nomor;
+                $temp->id_user = $user->id;
+                $temp->email = $request->email;
+                $temp->nama = $request->nama;
+                $temp->nik = $request->nik;
+                $temp->ttl = $request->tempatLahir . "," . $request->tanggalLahir;
+                $temp->agama = $request->agama;
+                $temp->jenis_kelamin = $request->jk;
+                $temp->pekerjaan = $request->pekerjaaan;
+                $temp->pendidikan = $request->pendidikan;
+                $temp->alamat = $request->alamat;
+                $temp->kecamatan = $request->kecamatan;
+                $temp->kode_kecamatan = $kecamatan->kode;
+                $temp->kelurahan = $request->kelurahan;
+                $temp->lingkungan = $request->lingkungan;
+                $temp->no_hp = $request->no_hp;
+                $temp->tingkat = $request->pj;
+                $temp->jabatan = $request->posisi;
+                $temp->ktp = "";
+                $temp->foto = "";
 
 
-                    if ($request->file('ttd') != null) {
-                        $ttd = $request->file('ttd')->store('ttd');
-                        $url = config('app.url');
-                        $image = $url . "/storage/app/" . $ttd;
-                        $temp->ttd = $image;
-                    }
-
-                    if ($request->file('foto') != null) {
-                        $foto = $request->file('foto')->store('foto');
-                        $url = config('app.url');
-                        $image = $url . "/storage/app/" . $foto;
-                        $temp->foto = $image;
-                    }
-
-                    if ($request->file('ktp') != null) {
-                        $ktp = $request->file('ktp')->store('ktp');
-                        $url = config('app.url');
-                        $image = $url . "/storage/app/" . $ktp;
-                        $temp->ktp = $image;
-                    }
-
-                    $saved = $temp->save();
-                    $tes = $no->value + 1;
-                    DB::update("update counter set value = $tes where id = 1");
-
-                    Mail::to($user->email)->send(new VerificationEmail($user));
-
-                    DB::commit();
-                    if (!$saved) {
-                        return response()
-                            ->json([
-                                'success' => false,
-                                'data' => "Error"
-                            ]);
-                    } else {
-                        return response()
-                            ->json([
-                                'success' => true,
-                                'data' => "Sukses"
-                            ]);
-                    }
-                } catch (Exception $e) {       // Rollback Transaction
-                    DB::rollback();
-                    return response()->json([
-                        'success' => false,
-                        'data' => $e
-                    ]);
-                    // ada yang error     
+                if ($request->file('ttd') != null) {
+                    $ttd = $request->file('ttd')->store('ttd');
+                    $url = config('app.url');
+                    $image = $url . "/storage/app/" . $ttd;
+                    $temp->ttd = $image;
                 }
+
+                if ($request->file('foto') != null) {
+                    $foto = $request->file('foto')->store('foto');
+                    $url = config('app.url');
+                    $image = $url . "/storage/app/" . $foto;
+                    $temp->foto = $image;
+                }
+
+                if ($request->file('ktp') != null) {
+                    $ktp = $request->file('ktp')->store('ktp');
+                    $url = config('app.url');
+                    $image = $url . "/storage/app/" . $ktp;
+                    $temp->ktp = $image;
+                }
+
+                $saved = $temp->save();
+                $tes = $no->value + 1;
+                DB::update("update counter set value = $tes where id = 1");
+
+                Mail::to($user->email)->send(new VerificationEmail($user));
+
+                DB::commit();
+                if (!$saved) {
+                    return response()
+                        ->json([
+                            'success' => false,
+                            'data' => "Error"
+                        ]);
+                } else {
+                    return response()
+                        ->json([
+                            'success' => true,
+                            'data' => "Sukses"
+                        ]);
+                }
+                // DB::beginTransaction();
+                // try {
+                //     $kecamatan = Kecamatan::where('nama', $request->kecamatan)->first();
+                //     $kelurahan = Kelurahan::where('nama', $request->kelurahan)->first();
+                //     $no = DB::table('counter')->where('id', '=', 1)->first();
+
+                //     $user = new User();
+                //     $user->email = $request->email;
+                //     $user->password = $request->password;
+                //     $user->name = $request->nama;
+                //     $user->email_token = sprintf("%06d", mt_rand(1, 999999));
+                //     $user->save();
+
+                //     $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "1271" . $kecamatan->kode . $kelurahan->kode_kelurahan;
+                //     //  $nomor = "1271.".$kecamatan->kode.".".$kelurahan->kode_kelurahan.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
+                //     $temp = new Anggota();
+                //     $temp->kta = $nomor;
+                //     $temp->id_user = $user->id;
+                //     $temp->email = $request->email;
+                //     $temp->nama = $request->nama;
+                //     $temp->nik = $request->nik;
+                //     $temp->ttl = $request->tempatLahir . "," . $request->tanggalLahir;
+                //     $temp->agama = $request->agama;
+                //     $temp->jenis_kelamin = $request->jk;
+                //     $temp->pekerjaan = $request->pekerjaaan;
+                //     $temp->pendidikan = $request->pendidikan;
+                //     $temp->alamat = $request->alamat;
+                //     $temp->kecamatan = $request->kecamatan;
+                //     $temp->kode_kecamatan = $kecamatan->kode;
+                //     $temp->kelurahan = $request->kelurahan;
+                //     $temp->lingkungan = $request->lingkungan;
+                //     $temp->no_hp = $request->no_hp;
+                //     $temp->tingkat = $request->pj;
+                //     $temp->jabatan = $request->posisi;
+                //     $temp->ktp = "";
+                //     $temp->foto = "";
+
+
+                //     if ($request->file('ttd') != null) {
+                //         $ttd = $request->file('ttd')->store('ttd');
+                //         $url = config('app.url');
+                //         $image = $url . "/storage/app/" . $ttd;
+                //         $temp->ttd = $image;
+                //     }
+
+                //     if ($request->file('foto') != null) {
+                //         $foto = $request->file('foto')->store('foto');
+                //         $url = config('app.url');
+                //         $image = $url . "/storage/app/" . $foto;
+                //         $temp->foto = $image;
+                //     }
+
+                //     if ($request->file('ktp') != null) {
+                //         $ktp = $request->file('ktp')->store('ktp');
+                //         $url = config('app.url');
+                //         $image = $url . "/storage/app/" . $ktp;
+                //         $temp->ktp = $image;
+                //     }
+
+                //     $saved = $temp->save();
+                //     $tes = $no->value + 1;
+                //     DB::update("update counter set value = $tes where id = 1");
+
+                //     Mail::to($user->email)->send(new VerificationEmail($user));
+
+                //     DB::commit();
+                //     if (!$saved) {
+                //         return response()
+                //             ->json([
+                //                 'success' => false,
+                //                 'data' => "Error"
+                //             ]);
+                //     } else {
+                //         return response()
+                //             ->json([
+                //                 'success' => true,
+                //                 'data' => "Sukses"
+                //             ]);
+                //     }
+                // } catch (Exception $e) {       // Rollback Transaction
+                //     DB::rollback();
+                //     return response()->json([
+                //         'success' => false,
+                //         'data' => $e
+                //     ]);
+                //     // ada yang error     
+                // }
             }
         }
     }
