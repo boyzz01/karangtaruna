@@ -145,22 +145,32 @@ class ApiController extends Controller
                     $user->save();
 
 
+                    if ($request->pj == "Kota Medan") {
+                        $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201";
+                    } else if ($request->pj == "Warga") {
+                        $nomor = "-";
+                    } else {
+                        $kel = DB::table("ms_kelurahan")->where('nama', $request->pj)->first();
+                        if ($kel != null) {
+                            $kodekel = $kel->kode_kelurahan;
+                            $kec = DB::table("ms_kecamatan")->where('id', $kel->id_kecamatan)->first();
+                            $kodekec = $kec->kode;
+                            $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kodekec . $kodekel;
+                        } else {
+                            $kec = DB::table("ms_kecamatan")->where('nama', $request->pj)->first();
+                            $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kec->kode;
+                        }
+                    }
+
+
                     // $kodekec = "";
                     // $kodekel = "";
 
                     // $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201";
                     // $kel = DB::table("ms_kelurahan")->where('nama', $request->pj)->first();
 
-                    // if ($kel != null) {
-                    //     $kodekel = $kel->kode_kelurahan;
-                    //     $kec = DB::table("ms_kecamatan")->where('id', $kel->id_kecamatan)->first();
-                    //     $kodekec = $kec->kode;
-                    //     $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kodekec . $kodekel;
-                    // } else {
-                    //     $kec = DB::table("ms_kecamatan")->where('nama', $request->pj)->first();
-                    //     $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kec->kode;
-                    // }
-                    $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kecamatan->kode . $kelurahan->kode_kelurahan;
+
+                    //$nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kecamatan->kode . $kelurahan->kode_kelurahan;
                     //  $nomor = "1271.".$kecamatan->kode.".".$kelurahan->kode_kelurahan.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
                     $temp = new Anggota();
                     $temp->kta = $nomor;
@@ -253,11 +263,10 @@ class ApiController extends Controller
                     'kelurahan' => $request->kelurahan,
                     'lingkungan' => $request->lingkungan,
                     'no_hp' => $request->no_hp,
-                    'tingkat' => "",
-                    'jabatan_provinsi' => $request->j_prov,
-                    'jabatan_kota' => $request->j_kota,
-                    'jabatan_kecamatan' => $request->j_kecamatan,
-                    'jabatan_kelurahan' => $request->j_kelurahan
+                    // 'jabatan_provinsi' => $request->j_prov,
+                    // 'jabatan_kota' => $request->j_kota,
+                    // 'jabatan_kecamatan' => $request->j_kecamatan,
+                    // 'jabatan_kelurahan' => $request->j_kelurahan
                 ]);
 
             return response()
