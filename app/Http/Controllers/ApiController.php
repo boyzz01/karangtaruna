@@ -144,7 +144,23 @@ class ApiController extends Controller
                     $user->email_token = sprintf("%06d", mt_rand(1, 999999));
                     $user->save();
 
-                    $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kecamatan->kode . $kelurahan->kode_kelurahan;
+
+                    $kodekec = "";
+                    $kodekel = "";
+
+                    $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201";
+                    $kel = DB::table("ms_kelurahan")->where('nama', $request->pj)->first();
+
+                    if ($kel != null) {
+                        $kodekel = $kel->kode_kelurahan;
+                        $kec = DB::table("ms_kecamatan")->where('id', $kel->id_kecamatan)->first();
+                        $kodekec = $kec->kode;
+                        $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kodekec . $kodekel;
+                    } else {
+                        $kec = DB::table("ms_kecamatan")->where('nama', $request->pj)->first();
+                        $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kec->kode;
+                    }
+                    //  $nomor = str_pad($no->value, 5, '0', STR_PAD_LEFT) . "0201" . $kecamatan->kode . $kelurahan->kode_kelurahan;
                     //  $nomor = "1271.".$kecamatan->kode.".".$kelurahan->kode_kelurahan.".".str_pad($no->value, 6, '0', STR_PAD_LEFT);
                     $temp = new Anggota();
                     $temp->kta = $nomor;
