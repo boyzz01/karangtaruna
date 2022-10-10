@@ -30,7 +30,8 @@ class ApiController extends Controller
 
     public function limit_berita()
     {
-        return response()->json(Berita::all()->limit(2));
+        $data =  DB::table("berita")->limit(2)->get();
+        return response()->json($data);
     }
 
     public function detail_anggota($id)
