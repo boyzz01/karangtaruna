@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\VerificationEmail;
 use App\Models\Anggota;
+use App\Models\Berita;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Produk;
@@ -21,6 +22,11 @@ use Illuminate\Support\Str;
 class ApiController extends Controller
 {
     //
+
+    public function get_berita()
+    {
+        return response()->json(Berita::all());
+    }
 
     public function detail_anggota($id)
     {
