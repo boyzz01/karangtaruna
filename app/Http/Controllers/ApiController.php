@@ -28,6 +28,11 @@ class ApiController extends Controller
         return response()->json(Berita::all());
     }
 
+    public function limit_berita()
+    {
+        return response()->json(Berita::all()->limit(3));
+    }
+
     public function detail_anggota($id)
     {
         return response()->json(Anggota::where("id_user", $id)->first());
