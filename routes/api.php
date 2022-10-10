@@ -22,6 +22,7 @@ Route::get('jenis', [ApiController::class, 'get_jenis']);
 Route::get('umkm', [ApiController::class, 'get_umkm']);
 Route::get('berita', [ApiController::class, 'get_berita']);
 Route::get('limitberita', [ApiController::class, 'limit_berita']);
+Route::get('detail_berita/{id}', [ApiController::class, 'detail_berita']);
 
 Route::post('/add_anggota', [ApiController::class, 'addAnggota']);
 Route::post('/add_umkm', [ApiController::class, 'addUmkm']);
